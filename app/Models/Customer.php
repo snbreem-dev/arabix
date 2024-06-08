@@ -10,7 +10,7 @@ class Customer extends Model
 {
     use HasFactory, softDeletes;
 
-    protected $fillable = ['name', 'email', 'phone', 'sms', 'whatsapp', 'language_id', 'currency_id'];
+    protected $fillable = ['name', 'email', 'phone', 'communications', 'language_id', 'currency_id'];
 
     /*
      * return the customer transactions

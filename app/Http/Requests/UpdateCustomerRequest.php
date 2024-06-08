@@ -15,6 +15,20 @@ class UpdateCustomerRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $communications = [];
+        if (is_array($this->communication)) {
+            foreach ($this->communication as $key => $value) {
+                $communications[$key] = in_array($value, ['on', 1]) ? 1 : 0;
+            }
+        }
+
+        $this->merge([
+            'communications' => json_encode($communications)
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,10 +40,9 @@ class UpdateCustomerRequest extends FormRequest
             'name' => ['required', 'string', 'min:1', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('customers', 'email')->ignore($this->customer->id)],
             'phone' => ['required', 'string', 'min:1', 'max:255', Rule::unique('customers', 'phone')->ignore($this->customer->id)],
-            'sms' => ['required', 'string', 'min:1', 'max:255'],
-            'whatsapp' => ['required', 'string', 'min:1', 'max:255'],
             'language_id' => ['required', 'integer', 'exists:languages,id'],
             'currency_id' => ['required', 'integer', 'exists:currencies,id'],
+            'communication' => ['sometimes', 'array'],
         ];
     }
 

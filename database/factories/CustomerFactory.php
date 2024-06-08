@@ -5,8 +5,6 @@ namespace Database\Factories;
 use App\Models\Currency;
 use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -32,21 +30,10 @@ class CustomerFactory extends Factory
             'name' => fake()->name,
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->unique()->phoneNumber(),
-            'sms' => fake()->sentence(),
-            'whatsapp' => fake()->sentence(),
             'language_id' => $language->id,
             'currency_id' => $currency->id,
+            'communications' => json_encode([]),
         ];
 
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn(array $attributes) => [
-            'email_verified_at' => null,
-        ]);
     }
 }

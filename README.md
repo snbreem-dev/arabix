@@ -1,6 +1,6 @@
 ### For first time
-- `git clone https://github.com/refactorian/laravel-docker.git`
-- `cd laravel-docker`
+- `git clone https://github.com/snbreem-dev/arabix.git`
+- `cd arabix`
 - `docker compose up -d --build`
 - `docker compose exec phpmyadmin chmod 777 /sessions`
 - `docker compose exec php bash`

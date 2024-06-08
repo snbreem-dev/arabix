@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateCustomerRequest;
+use App\Models\Communication;
 use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\Language;
@@ -77,13 +78,14 @@ class CustomerController extends Controller
         parent::$data['customer'] = $customer;
         parent::$data['languages'] = Language::all();
         parent::$data['currencies'] = Currency::all();
+        parent::$data['communications'] = Communication::all();
 
         return view('customers.edit', parent::$data);
     }
 
 
     /**
-     * * @OA\Get(
+     * * @OA\Put(
      *      path="dashboard/customers/{customerId}",
      *      operationId="updage customer data",
      *      tags={"Customers"},
@@ -121,17 +123,8 @@ class CustomerController extends Controller
      *               type="string"
      *           )
      *       ),
-     *       @OA\Parameter(
-     *           name="whatsapp",
-     *           description="whatsapp of customer",
-     *           required=true,
-     *           in="query",
-     *           @OA\Schema(
-     *               type="string"
-     *           )
-     *       ),
      *        @OA\Parameter(
-     *           name="language",
+     *           name="language_id",
      *           description="language of customer",
      *           required=true,
      *           in="query",
@@ -140,7 +133,7 @@ class CustomerController extends Controller
      *           )
      *       ),
      *       @OA\Parameter(
-     *           name="currenct",
+     *           name="currenct_id",
      *           description="currenct of customer",
      *           required=true,
      *           in="query",
@@ -159,14 +152,16 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-
         $customer->update($request->validated());
+
+        $customer->update([
+            'communications' => $request->communications,
+        ]);
 
         return array(
             'text' => __('Record updated successfully'),
             'status' => "success"
         );
-
     }
 
     /**
